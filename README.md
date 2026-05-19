@@ -1,11 +1,11 @@
-# Sistem Penjualan UMKM Online (UMKM E-Commerce API)
+## Sistem Penjualan UMKM Online (UMKM E-Commerce API)
 
 Aplikasi backend berbasis **REST API** yang dikembangkan menggunakan **Laravel 12**, dengan tujuan membantu pelaku UMKM mengelola penjualan produk secara digital. Aplikasi menyediakan endpoint untuk mengelola data pengguna, profil pengguna, kategori, produk UMKM, tag produk, serta pesanan secara terintegrasi.
 
 > Proyek Akhir mata kuliah **Teknologi Integrasi Sistem - B**
 > Program Studi Teknologi Informasi, Fakultas Ilmu Komputer, Universitas Brawijaya — 2026
 
-## Teknologi yang Digunakan
+### Teknologi yang Digunakan
 
 - **Framework**: Laravel 12
 - **Database**: MySQL
