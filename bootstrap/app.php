@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->use([
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
         $middleware->alias([
             'check.group.header'    => \App\Http\Middleware\CheckGroupHeader::class,
             'check.userid.required' => \App\Http\Middleware\CheckUserIdRequired::class,
@@ -19,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.product.stock'   => \App\Http\Middleware\CheckProductStock::class,
             'check.order.status'    => \App\Http\Middleware\CheckOrderStatus::class,
             'check.tag.name'        => \App\Http\Middleware\CheckTagName::class,
+            'role'                  => \App\Http\Middleware\RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

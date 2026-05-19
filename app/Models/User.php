@@ -2,19 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model
+class User extends Authenticatable implements JWTSubject
 {
-    protected $fillable = ['name', 'email', 'phone', 'role'];
+    protected $fillable = ['name', 'email', 'password', 'phone', 'role'];
+    protected $hidden = ['password'];
 
-    // One-to-One: satu user memiliki satu profile
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     public function profile()
     {
         return $this->hasOne(UserProfile::class);
     }
 
-    // One-to-Many: satu user memiliki banyak order
     public function orders()
     {
         return $this->hasMany(Order::class);
