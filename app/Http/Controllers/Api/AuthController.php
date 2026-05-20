@@ -113,6 +113,6 @@ class AuthController extends Controller
     )]
     public function getUserProfile()
     {
-        return response()->json(['status' => 'success', 'data' => auth('api')->user()]);
+        return response()->json(['status' => 'success', 'data' => auth('api')->user()->load('profile')]);
     }
 }

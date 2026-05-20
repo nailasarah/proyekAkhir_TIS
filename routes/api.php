@@ -51,6 +51,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/tags',                                [TagController::class, 'index']);
     Route::get('/tags/{id}',                           [TagController::class, 'show']);
     Route::post('/tags',                               [TagController::class, 'store'])->middleware('role:admin,manager');
+    Route::put('/tags/{id}',                           [TagController::class, 'update'])->middleware('role:admin,manager');
     Route::delete('/tags/{id}',                        [TagController::class, 'destroy'])->middleware('role:admin');
     Route::put('/products/{productId}/tag/{tagId}',    [TagController::class, 'attachToProduct'])->middleware('role:admin,manager');
     Route::delete('/products/{productId}/tag/{tagId}', [TagController::class, 'detachFromProduct'])->middleware('role:admin');

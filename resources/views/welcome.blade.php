@@ -650,6 +650,427 @@
             </div>
         </div>
 
+        <!-- ----------------- SECTION: USER PROFILE (Logged-in User Profile) ----------------- -->
+        <div id="page-profile" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row gap-6">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                    <div class="w-24 h-24 rounded-full bg-[#0c1938] text-white flex items-center justify-center text-4xl font-bold shadow-md relative">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="profileAvatarBadge" class="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-orange-500 border-2 border-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-shield"></i></span>
+                    </div>
+                    <h3 id="profileName" class="font-extrabold text-base text-slate-800 uppercase mt-4 text-center">Nama Pengguna</h3>
+                    <span id="profileRoleBadge" class="text-[9px] bg-orange-500 text-white font-bold px-3 py-1 rounded-full uppercase tracking-wider mt-2">CUSTOMER</span>
+                    <p class="text-[10px] text-slate-400 font-semibold mt-1">Status Keanggotaan: Aktif</p>
+                </div>
+                
+                <div class="md:w-2/3 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <h4 class="font-bold text-xs text-slate-800 uppercase tracking-tight flex items-center gap-1.5">
+                            <i class="fa-solid fa-address-card text-orange-500"></i> Detail Informasi Profil
+                        </h4>
+                        <button onclick="editMyProfile()" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[11px] px-3.5 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+                            <i class="fa-solid fa-user-pen"></i> Lengkapi / Edit Profil
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Email Pengguna</span>
+                            <p id="profileEmail" class="text-xs text-slate-700 font-medium">email@website.com</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Nomor Telepon</span>
+                            <p id="profilePhone" class="text-xs text-slate-700 font-medium">081234567890</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Jenis Kelamin</span>
+                            <p id="profileGender" class="text-xs text-slate-700 font-medium">-</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Tanggal Lahir</span>
+                            <p id="profileBirthDate" class="text-xs text-slate-700 font-medium">-</p>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Alamat Rumah</span>
+                            <p id="profileAddress" class="text-xs text-slate-700 font-medium">-</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Kota</span>
+                            <p id="profileCity" class="text-xs text-slate-700 font-medium">-</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 block">Provinsi / Kode Pos</span>
+                            <p id="profileProvincePostal" class="text-xs text-slate-700 font-medium">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: EDIT USER PROFILE FORM ----------------- -->
+        <div id="page-profile-edit" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('profile')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Lengkapi / Ubah Profil Saya</h3>
+                </div>
+
+                <form onsubmit="handleEditProfileSubmit(event)" class="max-w-xl space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Tanggal Lahir</label>
+                            <input type="date" id="profileFormBirthDate" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Jenis Kelamin</label>
+                            <select id="profileFormGender" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                                <option value="male">Laki-Laki</option>
+                                <option value="female">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Alamat Rumah Lengkap</label>
+                        <textarea id="profileFormAddress" rows="2" placeholder="Jl. Diponegoro No.17" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="col-span-1">
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Kota</label>
+                            <input type="text" id="profileFormCity" placeholder="Malang" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div class="col-span-1">
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Provinsi</label>
+                            <input type="text" id="profileFormProvince" placeholder="Jawa Timur" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div class="col-span-1">
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Kode Pos</label>
+                            <input type="text" id="profileFormPostalCode" placeholder="65145" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Profil (POST /api/user-profiles)
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: USER MANAGEMENT (ADMIN ONLY) ----------------- -->
+        <div id="page-users-list" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 gap-2">
+                    <h3 class="font-bold text-xs text-slate-800 uppercase tracking-tight flex items-center gap-1.5">
+                        <i class="fa-solid fa-users text-orange-500"></i> Kelola Pengguna (User Management)
+                    </h3>
+                    <button onclick="navigateTo('user-new')" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[11px] px-3.5 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+                        <i class="fa-solid fa-user-plus"></i> Tambah User Baru
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-150 rounded-lg">
+                    <table class="w-full text-xs text-left text-slate-700" id="dashboardUsersTable">
+                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-150">
+                            <tr>
+                                <th class="px-4 py-3">Nama</th>
+                                <th class="px-4 py-3">Email</th>
+                                <th class="px-4 py-3">Role</th>
+                                <th class="px-4 py-3">Telepon</th>
+                                <th class="px-4 py-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: CREATE USER FORM (ADMIN ONLY) ----------------- -->
+        <div id="page-user-new" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('users-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Tambah User Baru</h3>
+                </div>
+
+                <form onsubmit="handleCreateUserSubmit(event)" class="max-w-xl space-y-4">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Lengkap</label>
+                        <input type="text" id="userFormName" required placeholder="Andi Saputra" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Alamat Email</label>
+                        <input type="email" id="userFormEmail" required placeholder="andi@email.com" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Password</label>
+                            <input type="password" id="userFormPassword" required placeholder="Min. 6 karakter" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Pilih Role</label>
+                            <select id="userFormRole" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                                <option value="customer">Customer</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nomor Telepon</label>
+                        <input type="text" id="userFormPhone" placeholder="081234567890" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Pengguna Baru
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: EDIT USER FORM (ADMIN ONLY) ----------------- -->
+        <div id="page-user-edit" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('users-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Ubah Data Pengguna</h3>
+                </div>
+
+                <form onsubmit="handleEditUserSubmit(event)" class="max-w-xl space-y-4">
+                    <input type="hidden" id="editUserFormId">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Lengkap</label>
+                        <input type="text" id="editUserFormName" required placeholder="Andi Saputra" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Alamat Email</label>
+                        <input type="email" id="editUserFormEmail" required placeholder="andi@email.com" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Password Baru (Opsional)</label>
+                            <input type="password" id="editUserFormPassword" placeholder="Kosongkan jika tidak diubah" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Pilih Role</label>
+                            <select id="editUserFormRole" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                                <option value="customer">Customer</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nomor Telepon</label>
+                        <input type="text" id="editUserFormPhone" placeholder="081234567890" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Perubahan Pengguna
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: USER DETAIL VIEW (ADMIN ONLY) ----------------- -->
+        <div id="page-user-detail" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('users-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Detail Lengkap Data Pengguna</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-xl border border-slate-150" id="userDetailContent">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: CATEGORIES MANAGEMENT (ADMIN ONLY) ----------------- -->
+        <div id="page-categories-list" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 gap-2">
+                    <h3 class="font-bold text-xs text-slate-800 uppercase tracking-tight flex items-center gap-1.5">
+                        <i class="fa-solid fa-tags text-orange-500"></i> Kelola Kategori (Categories Management)
+                    </h3>
+                    <button onclick="navigateTo('category-new')" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[11px] px-3.5 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> Tambah Kategori
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-150 rounded-lg">
+                    <table class="w-full text-xs text-left text-slate-700" id="dashboardCategoriesTable">
+                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-150">
+                            <tr>
+                                <th class="px-4 py-3">Nama Kategori</th>
+                                <th class="px-4 py-3">Slug</th>
+                                <th class="px-4 py-3">Deskripsi</th>
+                                <th class="px-4 py-3">Jumlah Produk</th>
+                                <th class="px-4 py-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: CREATE CATEGORY FORM (ADMIN ONLY) ----------------- -->
+        <div id="page-category-new" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('categories-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Tambah Kategori Baru</h3>
+                </div>
+
+                <form onsubmit="handleCreateCategorySubmit(event)" class="max-w-xl space-y-4">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Kategori</label>
+                        <input type="text" id="categoryFormName" required placeholder="Contoh: Kerajinan Kayu" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Deskripsi</label>
+                        <textarea id="categoryFormDescription" rows="3" placeholder="Deskripsikan kategori ini..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Status</label>
+                        <select id="categoryFormStatus" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                            <option value="1">Aktif</option>
+                            <option value="0">Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Kategori Baru
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: EDIT CATEGORY FORM (ADMIN ONLY) ----------------- -->
+        <div id="page-category-edit" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('categories-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Ubah Data Kategori</h3>
+                </div>
+
+                <form onsubmit="handleEditCategorySubmit(event)" class="max-w-xl space-y-4">
+                    <input type="hidden" id="editCategoryFormId">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Kategori</label>
+                        <input type="text" id="editCategoryFormName" required placeholder="Contoh: Kerajinan Kayu" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Deskripsi</label>
+                        <textarea id="editCategoryFormDescription" rows="3" placeholder="Deskripsikan kategori..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Status</label>
+                        <select id="editCategoryFormStatus" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                            <option value="1">Aktif</option>
+                            <option value="0">Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Perubahan Kategori
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: TAGS MANAGEMENT (ADMIN ONLY) ----------------- -->
+        <div id="page-tags-list" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 gap-2">
+                    <h3 class="font-bold text-xs text-slate-800 uppercase tracking-tight flex items-center gap-1.5">
+                        <i class="fa-solid fa-hashtag text-orange-500"></i> Kelola Tag (Tags Management)
+                    </h3>
+                    <button onclick="navigateTo('tag-new')" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[11px] px-3.5 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> Tambah Tag
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-150 rounded-lg max-w-lg">
+                    <table class="w-full text-xs text-left text-slate-700" id="dashboardTagsTable">
+                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-150">
+                            <tr>
+                                <th class="px-4 py-3">Nama Tag</th>
+                                <th class="px-4 py-3">Slug</th>
+                                <th class="px-4 py-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: CREATE TAG FORM (ADMIN ONLY) ----------------- -->
+        <div id="page-tag-new" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('tags-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Tambah Tag Baru</h3>
+                </div>
+
+                <form onsubmit="handleCreateTagSubmit(event)" class="max-w-md space-y-4">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Tag</label>
+                        <input type="text" id="tagFormName" required placeholder="Contoh: Terlaris" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Tag Baru
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ----------------- SECTION: EDIT TAG FORM (ADMIN ONLY) ----------------- -->
+        <div id="page-tag-edit" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('tags-list')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Ubah Data Tag</h3>
+                </div>
+
+                <form onsubmit="handleEditTagSubmit(event)" class="max-w-md space-y-4">
+                    <input type="hidden" id="editTagFormId">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Tag</label>
+                        <input type="text" id="editTagFormName" required placeholder="Contoh: Terlaris" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Perubahan Tag
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </main>
 
     <!-- ----------------- CART SLIDE-IN DRAWER (WARKOM STYLE) ----------------- -->
@@ -837,6 +1258,14 @@
             if (route === 'dashboard') {
                 loadDashboardStats();
                 loadDashboardOrders();
+            } else if (route === 'profile') {
+                loadMyProfile();
+            } else if (route === 'users-list') {
+                loadUsersList();
+            } else if (route === 'categories-list') {
+                loadCategoriesList();
+            } else if (route === 'tags-list') {
+                loadTagsList();
             }
         }
 
@@ -893,6 +1322,13 @@
             // Role-based Nav items (Tahap 3.c)
             if (jwtToken && loggedInUser) {
                 nav.innerHTML += createNavLink('dashboard', 'fa-solid fa-table-list', 'Kelola Pesanan');
+                nav.innerHTML += createNavLink('profile', 'fa-solid fa-user', 'Profil Saya');
+                
+                if (loggedInUser.role === 'admin') {
+                    nav.innerHTML += createNavLink('users-list', 'fa-solid fa-users', 'Kelola User');
+                    nav.innerHTML += createNavLink('categories-list', 'fa-solid fa-tags', 'Kelola Kategori');
+                    nav.innerHTML += createNavLink('tags-list', 'fa-solid fa-hashtag', 'Kelola Tag');
+                }
             }
         }
 
@@ -1907,6 +2343,735 @@
                 products.forEach(p => {
                     select.innerHTML += `<option value="${p.id}">${p.name} (Harga: Rp ${Number(p.price).toLocaleString('id-ID')} | Stok: ${p.stock})</option>`;
                 });
+            }
+        }
+
+        // ----------------- GLOBAL JWT 401 INTERCEPTOR -----------------
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            const response = await originalFetch(...args);
+            const url = typeof args[0] === 'string' ? args[0] : args[0].url;
+            if (response.status === 401 && !url.includes('/api/login') && !url.includes('/api/register')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                jwtToken = null;
+                loggedInUser = null;
+                showToastNotification('Sesi Anda telah berakhir atau token tidak valid. Silakan login kembali.');
+                navigateTo('login');
+            }
+            return response;
+        };
+
+        // ----------------- USER PROFILE MANAGEMENT -----------------
+        let myProfileData = null;
+        async function loadMyProfile() {
+            if (!jwtToken) return;
+            try {
+                const response = await fetch('/api/me', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const u = res.data;
+                    document.getElementById('profileName').innerText = u.name;
+                    document.getElementById('profileEmail').innerText = u.email;
+                    document.getElementById('profilePhone').innerText = u.phone || '-';
+                    document.getElementById('profileRoleBadge').innerText = u.role;
+                    
+                    const profile = u.profile;
+                    myProfileData = profile; // Save profile details
+                    
+                    if (profile) {
+                        document.getElementById('profileGender').innerText = profile.gender === 'male' ? 'Laki-Laki' : (profile.gender === 'female' ? 'Perempuan' : '-');
+                        document.getElementById('profileBirthDate').innerText = profile.birth_date ? new Date(profile.birth_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-';
+                        document.getElementById('profileAddress').innerText = profile.address || '-';
+                        document.getElementById('profileCity').innerText = profile.city || '-';
+                        document.getElementById('profileProvincePostal').innerText = `${profile.province || '-'} / ${profile.postal_code || '-'}`;
+                    } else {
+                        document.getElementById('profileGender').innerText = '- (Belum melengkapi)';
+                        document.getElementById('profileBirthDate').innerText = '- (Belum melengkapi)';
+                        document.getElementById('profileAddress').innerText = '- (Belum melengkapi)';
+                        document.getElementById('profileCity').innerText = '- (Belum melengkapi)';
+                        document.getElementById('profileProvincePostal').innerText = '- / -';
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal mengambil data profil.');
+            }
+        }
+
+        function editMyProfile() {
+            if (myProfileData) {
+                document.getElementById('profileFormBirthDate').value = myProfileData.birth_date || '';
+                document.getElementById('profileFormGender').value = myProfileData.gender || 'male';
+                document.getElementById('profileFormAddress').value = myProfileData.address || '';
+                document.getElementById('profileFormCity').value = myProfileData.city || '';
+                document.getElementById('profileFormProvince').value = myProfileData.province || '';
+                document.getElementById('profileFormPostalCode').value = myProfileData.postal_code || '';
+            } else {
+                document.getElementById('profileFormBirthDate').value = '';
+                document.getElementById('profileFormGender').value = 'male';
+                document.getElementById('profileFormAddress').value = '';
+                document.getElementById('profileFormCity').value = '';
+                document.getElementById('profileFormProvince').value = '';
+                document.getElementById('profileFormPostalCode').value = '';
+            }
+            navigateTo('profile-edit');
+        }
+
+        async function handleEditProfileSubmit(e) {
+            e.preventDefault();
+            const birth_date = document.getElementById('profileFormBirthDate').value || null;
+            const gender = document.getElementById('profileFormGender').value || null;
+            const address = document.getElementById('profileFormAddress').value || null;
+            const city = document.getElementById('profileFormCity').value || null;
+            const province = document.getElementById('profileFormProvince').value || null;
+            const postal_code = document.getElementById('profileFormPostalCode').value || null;
+
+            const payload = {
+                address,
+                city,
+                province,
+                postal_code,
+                birth_date,
+                gender
+            };
+
+            const isUpdate = myProfileData !== null;
+            const url = isUpdate ? `/api/user-profiles/${myProfileData.id}` : '/api/user-profiles';
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            if (!isUpdate) {
+                payload.user_id = loggedInUser.id;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification(isUpdate ? 'Profil berhasil diperbarui!' : 'Profil berhasil dilengkapi!');
+                    navigateTo('profile');
+                } else {
+                    showToastNotification(res.message || 'Gagal menyimpan data profil.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Kesalahan jaringan saat menyimpan profil.');
+            }
+        }
+
+        // ----------------- USER MANAGEMENT CRUD (ADMIN ONLY) -----------------
+        async function loadUsersList() {
+            if (!jwtToken || loggedInUser.role !== 'admin') return;
+            const tbody = document.querySelector('#dashboardUsersTable tbody');
+            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 italic">Memuat data pengguna...</td></tr>`;
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const users = res.data || [];
+                    tbody.innerHTML = '';
+                    if (users.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 italic">Tidak ada data pengguna.</td></tr>`;
+                        return;
+                    }
+
+                    users.forEach(u => {
+                        let actionButtons = `
+                            <button onclick="viewUserDetail(${u.id})" class="text-blue-600 hover:text-blue-800 font-bold mr-3.5"><i class="fa-solid fa-eye"></i> Detail</button>
+                            <button onclick="editUser(${u.id})" class="text-amber-600 hover:text-amber-800 font-bold mr-3.5"><i class="fa-solid fa-pen-to-square"></i> Ubah</button>
+                            <button onclick="deleteUser(${u.id})" class="text-red-600 hover:text-red-800 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        `;
+
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 font-bold text-slate-700">${u.name}</td>
+                            <td class="px-4 py-3">${u.email}</td>
+                            <td class="px-4 py-3"><span class="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${u.role === 'admin' ? 'bg-red-100 text-red-800' : (u.role === 'manager' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800')}">${u.role}</span></td>
+                            <td class="px-4 py-3">${u.phone || '-'}</td>
+                            <td class="px-4 py-3 text-right font-medium">${actionButtons}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-red-500 font-medium">Gagal memuat: ${res.message}</td></tr>`;
+                }
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-red-500 font-medium">Error koneksi jaringan.</td></tr>`;
+            }
+        }
+
+        async function viewUserDetail(id) {
+            if (!jwtToken) return;
+            const container = document.getElementById('userDetailContent');
+            container.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-400">Mengambil detail pengguna...</div>`;
+            navigateTo('user-detail');
+
+            try {
+                const response = await fetch(`/api/users/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const u = res.data;
+                    const profile = u.profile;
+                    const orders = u.orders || [];
+
+                    let ordersHtml = '';
+                    if (orders.length > 0) {
+                        ordersHtml = `
+                            <div class="col-span-1 md:col-span-2 mt-4 border-t border-slate-200 pt-4">
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block mb-2 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-receipt text-orange-500"></i> Riwayat Transaksi Belanja</span>
+                                <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                    <table class="w-full text-xs text-left text-slate-700">
+                                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200">
+                                            <tr>
+                                                <th class="px-4 py-2.5">Kode Order</th>
+                                                <th class="px-4 py-2.5">Status</th>
+                                                <th class="px-4 py-2.5 text-right">Total Belanja</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                        `;
+                        orders.forEach(o => {
+                            ordersHtml += `
+                                <tr>
+                                    <td class="px-4 py-2 font-mono font-bold text-slate-700">${o.order_code}</td>
+                                    <td class="px-4 py-2 uppercase text-[9px] font-bold">${o.status}</td>
+                                    <td class="px-4 py-2 text-right font-bold text-orange-600">Rp ${Number(o.total_price).toLocaleString('id-ID')}</td>
+                                </tr>
+                            `;
+                        });
+                        ordersHtml += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        ordersHtml = `<div class="col-span-1 md:col-span-2 mt-4 border-t border-slate-200 pt-4 text-center text-slate-400 italic">Belum ada riwayat pesanan belanja.</div>`;
+                    }
+
+                    container.innerHTML = `
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Nama Lengkap</span>
+                                <p class="text-sm font-extrabold text-slate-800 uppercase">${u.name}</p>
+                            </div>
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Email Pengguna</span>
+                                <p class="text-xs font-semibold text-slate-700">${u.email}</p>
+                            </div>
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Nomor Telepon</span>
+                                <p class="text-xs font-semibold text-slate-700">${u.phone || '-'}</p>
+                            </div>
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Role & Otoritas</span>
+                                <span class="inline-block mt-1 px-3 py-1 rounded-full text-[9px] font-extrabold uppercase bg-[#0c1938] text-white">${u.role}</span>
+                            </div>
+                        </div>
+                        <div class="space-y-4 border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Alamat Rumah</span>
+                                <p class="text-xs text-slate-700">${profile?.address || '-'}</p>
+                            </div>
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Kota / Provinsi</span>
+                                <p class="text-xs text-slate-700">${profile?.city || '-'} / ${profile?.province || '-'}</p>
+                            </div>
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-400 block">Tanggal Lahir / Gender</span>
+                                <p class="text-xs text-slate-700">${profile?.birth_date || '-'} / ${profile?.gender || '-'}</p>
+                            </div>
+                        </div>
+                        ${ordersHtml}
+                    `;
+                } else {
+                    container.innerHTML = `<div class="col-span-2 text-center text-red-500 py-10 font-bold">Gagal memuat detail user.</div>`;
+                }
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<div class="col-span-2 text-center text-red-500 py-10 font-bold">Kesalahan jaringan API.</div>`;
+            }
+        }
+
+        async function handleCreateUserSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('userFormName').value;
+            const email = document.getElementById('userFormEmail').value;
+            const password = document.getElementById('userFormPassword').value;
+            const role = document.getElementById('userFormRole').value;
+            const phone = document.getElementById('userFormPhone').value;
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ name, email, password, role, phone })
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('User baru berhasil dibuat!');
+                    document.getElementById('userFormName').value = '';
+                    document.getElementById('userFormEmail').value = '';
+                    document.getElementById('userFormPassword').value = '';
+                    document.getElementById('userFormPhone').value = '';
+                    navigateTo('users-list');
+                } else {
+                    showToastNotification(res.message || 'Gagal membuat user.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        let editUserFormLoadedData = null;
+        async function editUser(id) {
+            if (!jwtToken) return;
+            try {
+                const response = await fetch(`/api/users/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    editUserFormLoadedData = res.data;
+                    document.getElementById('editUserFormId').value = res.data.id;
+                    document.getElementById('editUserFormName').value = res.data.name;
+                    document.getElementById('editUserFormEmail').value = res.data.email;
+                    document.getElementById('editUserFormRole').value = res.data.role;
+                    document.getElementById('editUserFormPhone').value = res.data.phone || '';
+                    document.getElementById('editUserFormPassword').value = ''; // empty password by default
+
+                    navigateTo('user-edit');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal mengambil data user.');
+            }
+        }
+
+        async function handleEditUserSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('editUserFormId').value;
+            const name = document.getElementById('editUserFormName').value;
+            const email = document.getElementById('editUserFormEmail').value;
+            const password = document.getElementById('editUserFormPassword').value;
+            const role = document.getElementById('editUserFormRole').value;
+            const phone = document.getElementById('editUserFormPhone').value;
+
+            const payload = { name, email, role, phone };
+            if (password) {
+                payload.password = password;
+            }
+
+            try {
+                const response = await fetch(`/api/users/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Data user berhasil diperbarui!');
+                    navigateTo('users-list');
+                } else {
+                    showToastNotification(res.message || 'Gagal memperbarui data user.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        async function deleteUser(id) {
+            if (id === loggedInUser.id) {
+                showToastNotification('Aksi ditolak: Anda tidak dapat menghapus diri sendiri!');
+                return;
+            }
+
+            if (confirm('Apakah Anda yakin ingin menghapus user ini secara permanen dari sistem?')) {
+                try {
+                    const response = await fetch(`/api/users/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`
+                        }
+                    });
+
+                    const res = await response.json();
+                    if (response.ok && res.status === 'success') {
+                        showToastNotification('User berhasil dihapus!');
+                        loadUsersList();
+                    } else {
+                        showToastNotification(res.message || 'Gagal menghapus user.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToastNotification('Gagal menghubungi backend API.');
+                }
+            }
+        }
+
+        // ----------------- CATEGORIES MANAGEMENT CRUD (ADMIN ONLY) -----------------
+        async function loadCategoriesList() {
+            if (!jwtToken) return;
+            const tbody = document.querySelector('#dashboardCategoriesTable tbody');
+            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 italic">Memuat data kategori...</td></tr>`;
+
+            try {
+                const response = await fetch('/api/categories', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const cats = res.data || [];
+                    categories = cats; // update local categories cache
+                    tbody.innerHTML = '';
+                    if (cats.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 italic">Tidak ada data kategori.</td></tr>`;
+                        return;
+                    }
+
+                    cats.forEach(c => {
+                        let actionButtons = `
+                            <button onclick="editCategory(${c.id})" class="text-amber-600 hover:text-amber-800 font-bold mr-3.5"><i class="fa-solid fa-pen-to-square"></i> Ubah</button>
+                            <button onclick="deleteCategory(${c.id})" class="text-red-600 hover:text-red-800 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        `;
+
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 font-bold text-slate-700 uppercase">${c.name}</td>
+                            <td class="px-4 py-3 font-mono text-slate-500">${c.slug}</td>
+                            <td class="px-4 py-3">${c.description || '-'}</td>
+                            <td class="px-4 py-3 font-bold">${c.products_count !== undefined ? c.products_count : 0}</td>
+                            <td class="px-4 py-3 text-right font-medium">${actionButtons}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-red-500 font-medium">Gagal memuat: ${res.message}</td></tr>`;
+                }
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-red-500 font-medium">Error koneksi jaringan.</td></tr>`;
+            }
+        }
+
+        async function handleCreateCategorySubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('categoryFormName').value;
+            const description = document.getElementById('categoryFormDescription').value;
+            const is_active = Number(document.getElementById('categoryFormStatus').value);
+
+            try {
+                const response = await fetch('/api/categories', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ name, description, is_active })
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Kategori baru berhasil dibuat!');
+                    document.getElementById('categoryFormName').value = '';
+                    document.getElementById('categoryFormDescription').value = '';
+                    navigateTo('categories-list');
+                } else {
+                    showToastNotification(res.message || 'Gagal membuat kategori.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        async function editCategory(id) {
+            if (!jwtToken) return;
+            try {
+                const response = await fetch(`/api/categories/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const c = res.data;
+                    document.getElementById('editCategoryFormId').value = c.id;
+                    document.getElementById('editCategoryFormName').value = c.name;
+                    document.getElementById('editCategoryFormDescription').value = c.description || '';
+                    document.getElementById('editCategoryFormStatus').value = c.is_active ? "1" : "0";
+
+                    navigateTo('category-edit');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal mengambil data kategori.');
+            }
+        }
+
+        async function handleEditCategorySubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('editCategoryFormId').value;
+            const name = document.getElementById('editCategoryFormName').value;
+            const description = document.getElementById('editCategoryFormDescription').value;
+            const is_active = Number(document.getElementById('editCategoryFormStatus').value);
+
+            try {
+                const response = await fetch(`/api/categories/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ name, description, is_active })
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Kategori berhasil diperbarui!');
+                    navigateTo('categories-list');
+                } else {
+                    showToastNotification(res.message || 'Gagal memperbarui kategori.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        async function deleteCategory(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus kategori ini secara permanen?')) {
+                try {
+                    const response = await fetch(`/api/categories/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`
+                        }
+                    });
+
+                    const res = await response.json();
+                    if (response.ok && res.status === 'success') {
+                        showToastNotification('Kategori berhasil dihapus!');
+                        loadCategoriesList();
+                    } else {
+                        showToastNotification(res.message || 'Gagal menghapus kategori.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToastNotification('Gagal menghubungi backend API.');
+                }
+            }
+        }
+
+        // ----------------- TAGS MANAGEMENT CRUD (ADMIN ONLY) -----------------
+        async function loadTagsList() {
+            if (!jwtToken) return;
+            const tbody = document.querySelector('#dashboardTagsTable tbody');
+            tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-8 text-center text-slate-400 italic">Memuat data tag...</td></tr>`;
+
+            try {
+                const response = await fetch('/api/tags', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const tags = res.data || [];
+                    tagsData = tags; // update local tags cache
+                    tbody.innerHTML = '';
+                    if (tags.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-8 text-center text-slate-400 italic">Tidak ada data tag.</td></tr>`;
+                        return;
+                    }
+
+                    tags.forEach(t => {
+                        let actionButtons = `
+                            <button onclick="editTag(${t.id})" class="text-amber-600 hover:text-amber-800 font-bold mr-3.5"><i class="fa-solid fa-pen-to-square"></i> Ubah</button>
+                            <button onclick="deleteTag(${t.id})" class="text-red-600 hover:text-red-800 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        `;
+
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 font-bold text-slate-700 uppercase">${t.name}</td>
+                            <td class="px-4 py-3 font-mono text-slate-500">${t.slug}</td>
+                            <td class="px-4 py-3 text-right font-medium">${actionButtons}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-8 text-center text-red-500 font-medium">Gagal memuat: ${res.message}</td></tr>`;
+                }
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-8 text-center text-red-500 font-medium">Error koneksi jaringan.</td></tr>`;
+            }
+        }
+
+        async function handleCreateTagSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('tagFormName').value;
+
+            try {
+                const response = await fetch('/api/tags', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Tag baru berhasil dibuat!');
+                    document.getElementById('tagFormName').value = '';
+                    navigateTo('tags-list');
+                } else {
+                    showToastNotification(res.message || 'Gagal membuat tag.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        async function editTag(id) {
+            if (!jwtToken) return;
+            try {
+                const response = await fetch(`/api/tags/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    const t = res.data;
+                    document.getElementById('editTagFormId').value = t.id;
+                    document.getElementById('editTagFormName').value = t.name;
+
+                    navigateTo('tag-edit');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal mengambil data tag.');
+            }
+        }
+
+        async function handleEditTagSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('editTagFormId').value;
+            const name = document.getElementById('editTagFormName').value;
+
+            try {
+                const response = await fetch(`/api/tags/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Tag berhasil diperbarui!');
+                    navigateTo('tags-list');
+                } else {
+                    showToastNotification(res.message || 'Gagal memperbarui tag.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        async function deleteTag(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus tag ini secara permanen?')) {
+                try {
+                    const response = await fetch(`/api/tags/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`
+                        }
+                    });
+
+                    const res = await response.json();
+                    if (response.ok && res.status === 'success') {
+                        showToastNotification('Tag berhasil dihapus!');
+                        loadTagsList();
+                    } else {
+                        showToastNotification(res.message || 'Gagal menghapus tag.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToastNotification('Gagal menghubungi backend API.');
+                }
             }
         }
 

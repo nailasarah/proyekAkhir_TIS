@@ -77,6 +77,25 @@ class TagController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Tag berhasil dilepas dari produk', 'data' => $product->load('tags')], 200);
     }
 
+    #[OA\Put(path: '/api/tags/{id}', tags: ['Tags'], summary: 'Update nama tag (Admin & Manager)', security: [['bearerAuth' => []]], parameters: [new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), example: 1)], requestBody: new OA\RequestBody(required: true, content: new OA\JsonContent(required: ['name'], properties: [new OA\Property(property: 'name', type: 'string', example: 'Paling Laris')])), responses: [new OA\Response(response: 200, description: 'Tag berhasil diperbarui'), new OA\Response(response: 403, description: 'Akses ditolak'), new OA\Response(response: 404, description: 'Tag tidak ditemukan'), new OA\Response(response: 422, description: 'Validasi gagal')])]
+    public function update(Request $request, $id)
+    {
+        $tag = Tag::find($id);
+
+        if (!$tag) {
+            return response()->json(['status' => 'error', 'message' => 'Tag tidak ditemukan'], 404);
+        }
+
+        $data = $request->validate([
+            'name' => 'required|string|max:100|unique:tags,name,' . $id,
+        ]);
+
+        $data['slug'] = Str::slug($data['name']);
+        $tag->update($data);
+
+        return response()->json(['status' => 'success', 'message' => 'Tag berhasil diperbarui', 'data' => $tag], 200);
+    }
+
     #[OA\Delete(path: '/api/tags/{id}', tags: ['Tags'], summary: 'Hapus tag (Admin only)', security: [['bearerAuth' => []]], parameters: [new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), example: 6)], responses: [new OA\Response(response: 200, description: 'Berhasil dihapus'), new OA\Response(response: 403, description: 'Akses ditolak'), new OA\Response(response: 404, description: 'Tag tidak ditemukan')])]
     public function destroy($id)
     {
