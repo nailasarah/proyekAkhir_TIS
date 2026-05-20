@@ -60,4 +60,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/orders/{id}',        [OrderController::class, 'show']);
     Route::post('/orders',            [OrderController::class, 'store']);
     Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus'])->middleware('role:admin,manager');
+    Route::delete('/orders/{id}',     [OrderController::class, 'destroy'])->middleware('role:admin');
 });

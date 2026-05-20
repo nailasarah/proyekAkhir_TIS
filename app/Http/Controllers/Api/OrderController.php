@@ -94,4 +94,25 @@ class OrderController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Status order berhasil diperbarui', 'data' => $order], 200);
     }
+
+    #[OA\Delete(
+        path: '/api/orders/{id}',
+        tags: ['Orders'],
+        summary: 'Hapus pesanan (Admin)',
+        security: [['bearerAuth' => []]],
+        parameters: [new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), example: 1)],
+        responses: [new OA\Response(response: 200, description: 'Pesanan berhasil dihapus'), new OA\Response(response: 403, description: 'Akses ditolak'), new OA\Response(response: 404, description: 'Pesanan tidak ditemukan')]
+    )]
+    public function destroy($id)
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Order tidak ditemukan'], 404);
+        }
+
+        $order->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Order berhasil dihapus'], 200);
+    }
 }
