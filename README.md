@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Sistem Penjualan UMKM Online (UMKM E-Commerce API)
 
 Aplikasi backend berbasis **REST API** yang dikembangkan menggunakan **Laravel 12**, dengan tujuan membantu pelaku UMKM mengelola penjualan produk secara digital. Aplikasi menyediakan endpoint untuk mengelola data pengguna, profil pengguna, kategori, produk UMKM, tag produk, serta pesanan secara terintegrasi.
@@ -178,3 +179,6 @@ Dokumentasi Swagger: `http://localhost:8000/api/documentation`
 - ✅ REST API dengan response JSON terstruktur
 - ✅ JWT Authentication
 - ✅ Dokumentasi Swagger / OpenAPI
+=======
+# proyekAkhir_TIS
+>>>>>>> 4c6e6a3a6f077f4e42c303ec2cacb52da4372d30

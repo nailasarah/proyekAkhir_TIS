@@ -111,25 +111,6 @@
             <div class="mt-6 pt-5 border-t border-slate-700/60 text-center">
                 <p class="text-xs text-slate-400">Belum memiliki akun? <a href="#" onclick="navigateTo('register')" class="text-orange-400 font-bold hover:underline">Daftar sekarang</a></p>
             </div>
-
-            <!-- Demo helper panel -->
-            <div class="mt-6 p-4 bg-[#16284f]/40 border border-slate-700/40 rounded-xl">
-                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2.5 text-center">Pintasan Akun Uji Coba</span>
-                <div class="grid grid-cols-3 gap-2">
-                    <button type="button" onclick="autofillLogin('admin@toko.com', 'password')" class="text-[10px] bg-[#0c1938] hover:bg-orange-500 hover:text-white text-slate-300 font-semibold py-2 px-1 rounded-lg transition border border-slate-700/60 flex flex-col items-center gap-0.5">
-                        <span class="font-bold text-[9.5px]">Admin</span>
-                        <span class="text-[7.5px] font-normal text-slate-400 hover:text-white/80">admin@toko.com</span>
-                    </button>
-                    <button type="button" onclick="autofillLogin('manager@toko.com', 'password')" class="text-[10px] bg-[#0c1938] hover:bg-orange-500 hover:text-white text-slate-300 font-semibold py-2 px-1 rounded-lg transition border border-slate-700/60 flex flex-col items-center gap-0.5">
-                        <span class="font-bold text-[9.5px]">Manager</span>
-                        <span class="text-[7.5px] font-normal text-slate-400 hover:text-white/80">manager@toko.com</span>
-                    </button>
-                    <button type="button" onclick="autofillLogin('budi@email.com', 'password')" class="text-[10px] bg-[#0c1938] hover:bg-orange-500 hover:text-white text-slate-300 font-semibold py-2 px-1 rounded-lg transition border border-slate-700/60 flex flex-col items-center gap-0.5">
-                        <span class="font-bold text-[9.5px]">Customer</span>
-                        <span class="text-[7.5px] font-normal text-slate-400 hover:text-white/80">budi@email.com</span>
-                    </button>
-                </div>
-            </div>
         </div>
 
         <!-- ----------------- SECTION: REGISTER SCREEN ----------------- -->
@@ -431,6 +412,39 @@
                 </div>
             </div>
 
+            <!-- TABLE OF PRODUCTS IN DASHBOARD (CRUD for Admin) -->
+            <div id="dashboardProductsCard" class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4 hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 gap-2">
+                    <h3 class="font-bold text-xs text-slate-800 uppercase tracking-tight flex items-center gap-1.5">
+                        <i class="fa-solid fa-gifts text-orange-500"></i> Kelola Modul Produk (Product)
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="navigateTo('product-new')" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[11px] px-3.5 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> Tambah Produk Baru
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto border border-slate-150 rounded-lg">
+                    <table class="w-full text-xs text-left text-slate-700" id="dashboardProductsTable">
+                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-150">
+                            <tr>
+                                <th class="px-4 py-3">Nama Produk</th>
+                                <th class="px-4 py-3">Kategori</th>
+                                <th class="px-4 py-3">Harga</th>
+                                <th class="px-4 py-3">Stok</th>
+                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <!-- ----------------- SECTION: ORDER DETAILS VIEW (Tahap 2.b) ----------------- -->
@@ -462,6 +476,19 @@
                         <select id="orderFormUserId" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
                             <!-- Populated with users list -->
                         </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Pilih Produk</label>
+                            <select id="orderFormProductId" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                                <!-- Populated with products list -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Jumlah</label>
+                            <input type="number" id="orderFormQuantity" required min="1" value="1" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
                     </div>
 
                     <div>
@@ -514,89 +541,113 @@
             </div>
         </div>
 
-        <!-- ----------------- SECTION: ER DATABASE RELATIONAL VISUALIZER ----------------- -->
-        <div id="page-database-er" class="page-view hidden flex flex-col gap-6">
-            
+        <!-- ----------------- SECTION: CREATE PRODUCT FORM (Admin Only) ----------------- -->
+        <div id="page-product-new" class="page-view hidden flex flex-col gap-6">
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('dashboard')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Tambah Produk Baru</h3>
+                </div>
+
+                <form onsubmit="handleCreateProductSubmit(event)" class="max-w-xl space-y-4">
                     <div>
-                        <h2 class="font-bold text-sm text-slate-800 uppercase tracking-tight">Diagram Skema Relasi Database SQLite</h2>
-                        <p class="text-xs text-slate-400 mt-1">Arahkan kursor ke kartu tabel untuk memperjelas alur foreign key.</p>
-                    </div>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100 px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-nodes text-orange-500"></i> Relasi Skema Terintegrasi
-                    </span>
-                </div>
-
-                <!-- Grid diagram cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Users -->
-                    <div id="tb-users" onmouseenter="highlightRelation('users')" onmouseleave="clearRelationHighlight()" onclick="showDbSampleData('users')" class="db-er-card border border-slate-200 hover:border-orange-500 rounded-xl p-4 transition bg-white shadow-sm cursor-pointer">
-                        <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-                            <span class="font-bold text-xs text-slate-800 font-mono"><i class="fa-solid fa-table text-slate-400"></i> users</span>
-                            <span class="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-mono">1:1 / 1:N</span>
-                        </div>
-                        <ul class="font-mono text-[10.5px] text-slate-600 space-y-1">
-                            <li class="font-semibold text-orange-600"><i class="fa-solid fa-key"></i> id <span class="text-slate-400 text-[9px]">(PK)</span></li>
-                            <li><i class="fa-solid fa-envelope"></i> email</li>
-                            <li><i class="fa-solid fa-lock"></i> password</li>
-                            <li><i class="fa-solid fa-user-tag text-orange-500"></i> role</li>
-                            <li><i class="fa-solid fa-phone"></i> phone</li>
-                        </ul>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Produk</label>
+                        <input type="text" id="productFormName" required placeholder="Contoh: Kopi Gayo Premium" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
                     </div>
 
-                    <!-- User Profiles -->
-                    <div id="tb-user_profiles" onmouseenter="highlightRelation('user_profiles')" onmouseleave="clearRelationHighlight()" onclick="showDbSampleData('user_profiles')" class="db-er-card border border-slate-200 hover:border-orange-500 rounded-xl p-4 transition bg-white shadow-sm cursor-pointer">
-                        <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-                            <span class="font-bold text-xs text-slate-800 font-mono"><i class="fa-solid fa-table text-slate-400"></i> user_profiles</span>
-                            <span class="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-mono">1:1</span>
-                        </div>
-                        <ul class="font-mono text-[10.5px] text-slate-600 space-y-1">
-                            <li class="font-semibold text-slate-400"><i class="fa-solid fa-key"></i> id <span class="text-[9px]">(PK)</span></li>
-                            <li class="font-semibold text-blue-600"><i class="fa-solid fa-link"></i> user_id <span class="text-slate-400 text-[9px]">(FK -> users)</span></li>
-                            <li><i class="fa-solid fa-map-marker-alt"></i> address</li>
-                            <li><i class="fa-solid fa-city"></i> city</li>
-                            <li><i class="fa-solid fa-map"></i> province</li>
-                        </ul>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Kategori</label>
+                        <select id="productFormCategoryId" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                            <!-- Populated with categories list -->
+                        </select>
                     </div>
 
-                    <!-- Orders -->
-                    <div id="tb-orders" onmouseenter="highlightRelation('orders')" onmouseleave="clearRelationHighlight()" onclick="showDbSampleData('orders')" class="db-er-card border border-slate-200 hover:border-orange-500 rounded-xl p-4 transition bg-white shadow-sm cursor-pointer">
-                        <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-                            <span class="font-bold text-xs text-slate-800 font-mono"><i class="fa-solid fa-table text-slate-400"></i> orders</span>
-                            <span class="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-mono">1:N</span>
-                        </div>
-                        <ul class="font-mono text-[10.5px] text-slate-600 space-y-1">
-                            <li class="font-semibold text-orange-600"><i class="fa-solid fa-key"></i> id <span class="text-slate-400 text-[9px]">(PK)</span></li>
-                            <li class="font-semibold text-blue-600"><i class="fa-solid fa-link"></i> user_id <span class="text-slate-400 text-[9px]">(FK -> users)</span></li>
-                            <li><i class="fa-solid fa-barcode"></i> order_code</li>
-                            <li><i class="fa-solid fa-truck"></i> status</li>
-                            <li><i class="fa-solid fa-money-bill"></i> total_price</li>
-                        </ul>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Deskripsi Produk</label>
+                        <textarea id="productFormDescription" rows="3" placeholder="Tuliskan deskripsi produk yang menarik..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white"></textarea>
                     </div>
-                </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Harga Produk (Rp)</label>
+                            <input type="number" id="productFormPrice" required min="0" placeholder="15000" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Stok Awal</label>
+                            <input type="number" id="productFormStock" required min="0" placeholder="50" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Status Keaktifan</label>
+                        <select id="productFormStatus" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                            <option value="active">Active (Tampil di Toko)</option>
+                            <option value="inactive">Inactive (Disembunyikan)</option>
+                        </select>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Produk Baru
+                        </button>
+                    </div>
+                </form>
             </div>
+        </div>
 
-            <!-- TABLE DATAVIEWER -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col gap-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h3 class="font-bold text-xs text-slate-800 uppercase tracking-tight flex items-center gap-1.5">
-                        <i class="fa-solid fa-table-list text-orange-500"></i> Data SQLite: <span id="dbActiveTableName" class="font-mono text-orange-600 lowercase font-bold">users</span>
-                    </h3>
-                    <span class="text-[10px] text-slate-400">Klik kartu diagram di atas untuk berganti tabel data</span>
+        <!-- ----------------- SECTION: EDIT PRODUCT FORM (Admin Only) ----------------- -->
+        <div id="page-product-edit" class="page-view hidden flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-5">
+                    <button onclick="navigateTo('dashboard')" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3 class="font-extrabold text-sm uppercase tracking-tight text-slate-700">Ubah Data Produk</h3>
                 </div>
-                <div class="overflow-x-auto border border-slate-150 rounded-lg">
-                    <table class="w-full text-left text-slate-700" id="dbDataViewerTable">
-                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 border-b border-slate-150">
-                            <!-- JS -->
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <!-- JS -->
-                        </tbody>
-                    </table>
-                </div>
+
+                <form onsubmit="handleEditProductSubmit(event)" class="max-w-xl space-y-4">
+                    <input type="hidden" id="editProductFormId">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Nama Produk</label>
+                        <input type="text" id="editProductFormName" required placeholder="Contoh: Kopi Gayo Premium" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Kategori</label>
+                        <select id="editProductFormCategoryId" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                            <!-- Populated with categories list -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Deskripsi Produk</label>
+                        <textarea id="editProductFormDescription" rows="3" placeholder="Tuliskan deskripsi produk..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Harga Produk (Rp)</label>
+                            <input type="number" id="editProductFormPrice" required min="0" placeholder="15000" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Stok</label>
+                            <input type="number" id="editProductFormStock" required min="0" placeholder="50" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Status Keaktifan</label>
+                        <select id="editProductFormStatus" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-orange-500 bg-white">
+                            <option value="active">Active (Tampil di Toko)</option>
+                            <option value="inactive">Inactive (Disembunyikan)</option>
+                        </select>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <button type="submit" class="bg-[#0c1938] hover:bg-[#16284f] text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
+                            Simpan Perubahan Produk
+                        </button>
+                    </div>
+                </form>
             </div>
-
         </div>
 
     </main>
@@ -693,12 +744,12 @@
     <!-- ----------------- JAVASCRIPT APP ENGINE ----------------- -->
     <script>
         // Data queries from PHP
-        const categories = {!! json_encode($categories) !!};
-        const products = {!! json_encode($products) !!};
-        const tagsData = {!! json_encode($tags) !!};
-        const usersData = {!! json_encode($users) !!};
-        const userProfilesData = {!! json_encode($userProfiles) !!};
-        const ordersData = {!! json_encode($orders) !!};
+        let categories = {!! json_encode($categories) !!};
+        let products = {!! json_encode($products) !!};
+        let tagsData = {!! json_encode($tags) !!};
+        let usersData = {!! json_encode($users) !!};
+        let userProfilesData = {!! json_encode($userProfiles) !!};
+        let ordersData = {!! json_encode($orders) !!};
 
         // ----------------- CLIENT-SIDE STATE MANAGEMENT -----------------
         let currentRoute = 'home';
@@ -843,8 +894,6 @@
             if (jwtToken && loggedInUser) {
                 nav.innerHTML += createNavLink('dashboard', 'fa-solid fa-table-list', 'Kelola Pesanan');
             }
-
-            nav.innerHTML += createNavLink('database-er', 'fa-solid fa-database', 'Relasi Database SQLite');
         }
 
         // ----------------- AUTH SUBMISSIONS (REAL BACKEND INTEGRATION - 3.a & 3.b) -----------------
@@ -1218,6 +1267,11 @@
                 return;
             }
 
+            if (shoppingCart.length === 0) {
+                showToastNotification('Keranjang belanja Anda kosong.');
+                return;
+            }
+
             const btn = document.getElementById('checkoutButton');
             btn.disabled = true;
             btn.innerText = 'Mengirim Pesanan...';
@@ -1234,7 +1288,8 @@
                     body: JSON.stringify({
                         user_id: loggedInUser.id,
                         shipping_address: address,
-                        notes: notes
+                        notes: notes,
+                        items: shoppingCart.map(item => ({ product_id: item.id, quantity: item.qty }))
                     })
                 });
 
@@ -1414,6 +1469,53 @@
                     const formattedPrice = 'Rp ' + Number(o.total_price).toLocaleString('id-ID');
                     const orderDate = new Date(o.created_at).toLocaleString('id-ID');
 
+                    // Rincian barang pesanan
+                    let itemsHtml = '';
+                    if (o.items && o.items.length > 0) {
+                        itemsHtml = `
+                            <div class="mt-5 border-t border-slate-200 pt-4 col-span-1 md:col-span-2">
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block mb-2 tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-box text-orange-500"></i> Barang yang Dipesan</span>
+                                <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-inner bg-white">
+                                    <table class="w-full text-xs text-left text-slate-700">
+                                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200">
+                                            <tr>
+                                                <th class="px-4 py-3">Nama Produk</th>
+                                                <th class="px-4 py-3 text-center">Jumlah</th>
+                                                <th class="px-4 py-3 text-right">Harga Satuan</th>
+                                                <th class="px-4 py-3 text-right">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                        `;
+                        o.items.forEach(item => {
+                            const itemName = item.product?.name || `Produk ID #${item.product_id}`;
+                            const itemPrice = Number(item.price);
+                            const itemQty = Number(item.quantity);
+                            const itemSubtotal = itemPrice * itemQty;
+                            
+                            itemsHtml += `
+                                <tr>
+                                    <td class="px-4 py-3 font-bold text-slate-800 uppercase">${itemName}</td>
+                                    <td class="px-4 py-3 text-center font-bold text-slate-600">${itemQty} unit</td>
+                                    <td class="px-4 py-3 text-right">Rp ${itemPrice.toLocaleString('id-ID')}</td>
+                                    <td class="px-4 py-3 text-right font-black text-orange-600">Rp ${itemSubtotal.toLocaleString('id-ID')}</td>
+                                </tr>
+                            `;
+                        });
+                        itemsHtml += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        itemsHtml = `
+                            <div class="mt-5 border-t border-slate-200 pt-4 col-span-1 md:col-span-2 text-center text-slate-400 italic">
+                                Tidak ada data rincian barang untuk pesanan ini.
+                            </div>
+                        `;
+                    }
+
                     detailContainer.innerHTML = `
                         <div class="space-y-4">
                             <div>
@@ -1447,6 +1549,7 @@
                                 <p class="text-xs text-slate-500">${orderDate}</p>
                             </div>
                         </div>
+                        ${itemsHtml}
                     `;
                 } else {
                     detailContainer.innerHTML = `<div class="col-span-2 text-center text-red-500 py-10 font-bold">Gagal memuat detail: ${res.message}</div>`;
@@ -1463,6 +1566,8 @@
 
             const address = document.getElementById('orderFormAddress').value;
             const notes = document.getElementById('orderFormNotes').value;
+            const productId = Number(document.getElementById('orderFormProductId').value);
+            const quantity = Number(document.getElementById('orderFormQuantity').value);
             
             let userId = loggedInUser.id;
             // Admin/manager can assign orders to other users
@@ -1482,7 +1587,8 @@
                     body: JSON.stringify({
                         user_id: userId,
                         shipping_address: address,
-                        notes: notes
+                        notes: notes,
+                        items: [{ product_id: productId, quantity: quantity }]
                     })
                 });
 
@@ -1575,88 +1681,233 @@
             }
         }
 
-        // ----------------- DATABASE SCHEMA ER VISUALIZER -----------------
-        const erRelations = {
-            'users': ['user_profiles', 'orders'],
-            'user_profiles': ['users'],
-            'orders': ['users']
-        };
-
-        function highlightRelation(table) {
-            document.querySelectorAll('.db-er-card').forEach(c => {
-                c.classList.add('opacity-40');
-            });
-            const mainCard = document.getElementById(`tb-${table}`);
-            if (mainCard) {
-                mainCard.classList.remove('opacity-40');
-                mainCard.classList.add('border-orange-500', 'shadow-md');
-            }
-
-            const connected = erRelations[table] || [];
-            connected.forEach(conn => {
-                const cCard = document.getElementById(`tb-${conn}`);
-                if (cCard) {
-                    cCard.classList.remove('opacity-40');
-                    cCard.classList.add('border-emerald-500', 'shadow-sm');
+        // ----------------- ADMIN PRODUCTS MANAGEMENT CRUD -----------------
+        async function loadProductsFromBackend() {
+            if (!jwtToken) return;
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    products = res.data || [];
+                    renderCategorySidebar();
+                    renderProducts();
+                    populateOrderFormProductsDropdown();
                 }
-            });
-        }
-
-        function clearRelationHighlight() {
-            document.querySelectorAll('.db-er-card').forEach(c => {
-                c.classList.remove('opacity-40', 'border-orange-500', 'border-emerald-500', 'shadow-md', 'shadow-sm');
-            });
-        }
-
-        function showDbSampleData(table) {
-            document.getElementById('dbActiveTableName').innerText = table;
-            
-            const tableElem = document.getElementById('dbDataViewerTable');
-            const thead = tableElem.querySelector('thead');
-            const tbody = tableElem.querySelector('tbody');
-
-            thead.innerHTML = '';
-            tbody.innerHTML = '';
-
-            let data = [];
-            let columns = [];
-
-            if (table === 'users') {
-                data = usersData;
-                columns = ['id', 'name', 'email', 'role', 'phone'];
-            } else if (table === 'user_profiles') {
-                data = userProfilesData;
-                columns = ['id', 'user_id', 'address', 'city', 'province'];
-            } else if (table === 'orders') {
-                data = ordersData;
-                columns = ['id', 'order_code', 'status', 'total_price', 'shipping_address'];
+            } catch (err) {
+                console.error('Gagal mengambil data produk terbaru dari backend:', err);
             }
+        }
 
-            // Render Header
-            const hTr = document.createElement('tr');
-            columns.forEach(col => {
-                hTr.innerHTML += `<th class="px-4 py-3 font-semibold uppercase tracking-wider">${col}</th>`;
-            });
-            thead.appendChild(hTr);
+        async function loadDashboardProducts() {
+            if (!jwtToken) return;
 
-            // Render Rows
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${columns.length}" class="px-4 py-6 text-center text-slate-400 italic">Tidak ada baris data.</td></tr>`;
+            const tbody = document.querySelector('#dashboardProductsTable tbody');
+            tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-slate-400 italic">Memuat data produk...</td></tr>`;
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    products = res.data || [];
+                    tbody.innerHTML = '';
+                    if (products.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-slate-400 italic">Tidak ada data produk.</td></tr>`;
+                        return;
+                    }
+
+                    products.forEach(p => {
+                        const price = Number(p.price);
+                        const formattedPrice = 'Rp ' + price.toLocaleString('id-ID');
+                        const catName = p.category?.name || `Kategori ID #${p.category_id}`;
+                        const statusColor = p.status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700';
+
+                        let actionButtons = `
+                            <button onclick="editProduct(${p.id})" class="text-amber-600 hover:text-amber-800 font-bold mr-3.5"><i class="fa-solid fa-pen-to-square"></i> Ubah</button>
+                        `;
+
+                        if (loggedInUser.role === 'admin') {
+                            actionButtons += `
+                                <button onclick="deleteProduct(${p.id})" class="text-red-600 hover:text-red-800 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                            `;
+                        }
+
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+                        tr.innerHTML = `
+                            <td class="px-4 py-3 font-bold text-slate-700 uppercase">${p.name}</td>
+                            <td class="px-4 py-3">${catName}</td>
+                            <td class="px-4 py-3 font-semibold text-orange-600">${formattedPrice}</td>
+                            <td class="px-4 py-3 font-bold">${p.stock}</td>
+                            <td class="px-4 py-3"><span class="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${statusColor}">${p.status || 'active'}</span></td>
+                            <td class="px-4 py-3 text-right font-medium">${actionButtons}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500 font-medium">Gagal memuat produk: ${res.message}</td></tr>`;
+                }
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500 font-medium">Error koneksi jaringan backend.</td></tr>`;
+            }
+        }
+
+        function editProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+
+            document.getElementById('editProductFormId').value = p.id;
+            document.getElementById('editProductFormName').value = p.name;
+            document.getElementById('editProductFormCategoryId').value = p.category_id;
+            document.getElementById('editProductFormDescription').value = p.description || '';
+            document.getElementById('editProductFormPrice').value = p.price;
+            document.getElementById('editProductFormStock').value = p.stock;
+            document.getElementById('editProductFormStatus').value = p.status || 'active';
+
+            populateProductCategoriesDropdown('editProductFormCategoryId');
+            navigateTo('product-edit');
+        }
+
+        async function deleteProduct(id) {
+            if (loggedInUser.role !== 'admin') {
+                showToastNotification('Akses ditolak: Hanya Admin yang dapat menghapus produk!');
                 return;
             }
 
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
-                columns.forEach(col => {
-                    let val = row[col];
-                    if (col === 'total_price') {
-                        val = 'Rp ' + Number(val).toLocaleString('id-ID');
+            if (confirm('Apakah Anda yakin ingin menghapus produk ini secara permanen?')) {
+                try {
+                    const response = await fetch(`/api/products/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`
+                        }
+                    });
+
+                    const res = await response.json();
+                    if (response.ok && res.status === 'success') {
+                        showToastNotification('Produk berhasil dihapus!');
+                        await loadProductsFromBackend();
+                        loadDashboardProducts();
+                    } else {
+                        showToastNotification(res.message || 'Gagal menghapus produk.');
                     }
-                    tr.innerHTML += `<td class="px-4 py-3 font-mono text-[11px]">${val !== undefined && val !== null ? val : 'null'}</td>`;
+                } catch (err) {
+                    console.error(err);
+                    showToastNotification('Gagal menghubungi backend API.');
+                }
+            }
+        }
+
+        async function handleCreateProductSubmit(e) {
+            e.preventDefault();
+
+            const category_id = Number(document.getElementById('productFormCategoryId').value);
+            const name = document.getElementById('productFormName').value;
+            const description = document.getElementById('productFormDescription').value;
+            const price = Number(document.getElementById('productFormPrice').value);
+            const stock = Number(document.getElementById('productFormStock').value);
+            const status = document.getElementById('productFormStatus').value;
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ category_id, name, description, price, stock, status })
                 });
-                tbody.appendChild(tr);
-            });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Produk baru berhasil disimpan!');
+                    document.getElementById('productFormName').value = '';
+                    document.getElementById('productFormDescription').value = '';
+                    document.getElementById('productFormPrice').value = '';
+                    document.getElementById('productFormStock').value = '';
+                    document.getElementById('productFormStatus').value = 'active';
+
+                    await loadProductsFromBackend();
+                    navigateTo('dashboard');
+                } else {
+                    showToastNotification(res.message || 'Gagal membuat produk.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        async function handleEditProductSubmit(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editProductFormId').value;
+            const category_id = Number(document.getElementById('editProductFormCategoryId').value);
+            const name = document.getElementById('editProductFormName').value;
+            const description = document.getElementById('editProductFormDescription').value;
+            const price = Number(document.getElementById('editProductFormPrice').value);
+            const stock = Number(document.getElementById('editProductFormStock').value);
+            const status = document.getElementById('editProductFormStatus').value;
+
+            try {
+                const response = await fetch(`/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ category_id, name, description, price, stock, status })
+                });
+
+                const res = await response.json();
+                if (response.ok && res.status === 'success') {
+                    showToastNotification('Produk berhasil diperbarui!');
+                    await loadProductsFromBackend();
+                    navigateTo('dashboard');
+                } else {
+                    showToastNotification(res.message || 'Gagal memperbarui produk.');
+                }
+            } catch (err) {
+                console.error(err);
+                showToastNotification('Gagal menghubungi backend API.');
+            }
+        }
+
+        function populateProductCategoriesDropdown(selectId) {
+            const select = document.getElementById(selectId);
+            if (select) {
+                select.innerHTML = '';
+                categories.forEach(c => {
+                    select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                });
+            }
+        }
+
+        function populateOrderFormProductsDropdown() {
+            const select = document.getElementById('orderFormProductId');
+            if (select) {
+                select.innerHTML = '';
+                products.forEach(p => {
+                    select.innerHTML += `<option value="${p.id}">${p.name} (Harga: Rp ${Number(p.price).toLocaleString('id-ID')} | Stok: ${p.stock})</option>`;
+                });
+            }
         }
 
         // ----------------- TOAST NOTIFICATIONS -----------------
@@ -1681,10 +1932,10 @@
         renderHeaderAuth();
         renderCategorySidebar();
         renderProducts();
-        showDbSampleData('users');
 
         // Check initial routing based on login status
         if (jwtToken) {
+            loadProductsFromBackend();
             navigateTo('home');
         } else {
             navigateTo('login');
