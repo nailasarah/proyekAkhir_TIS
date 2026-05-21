@@ -47,12 +47,20 @@ class ProductController extends Controller
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'status'      => 'nullable|in:active,inactive',
+            'tags'        => 'nullable|array',
+            'tags.*'      => 'integer|exists:tags,id',
         ]);
 
         $data['slug'] = Str::slug($data['name']) . '-' . uniqid();
+        $tags = $request->input('tags', []);
+        
         $product = Product::create($data);
+        
+        if (!empty($tags)) {
+            $product->tags()->sync($tags);
+        }
 
-        return response()->json(['status' => 'success', 'message' => 'Produk berhasil dibuat', 'data' => $product->load('category')], 201);
+        return response()->json(['status' => 'success', 'message' => 'Produk berhasil dibuat', 'data' => $product->load('category', 'tags')], 201);
     }
 
     #[OA\Get(path: '/api/products/{id}', tags: ['Products'], summary: 'Ambil produk berdasarkan ID', security: [['bearerAuth' => []]], parameters: [new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer'), example: 1)], responses: [new OA\Response(response: 200, description: 'Berhasil'), new OA\Response(response: 404, description: 'Produk tidak ditemukan')])]
@@ -91,9 +99,15 @@ class ProductController extends Controller
             'price'       => 'sometimes|numeric|min:0',
             'stock'       => 'sometimes|integer|min:0',
             'status'      => 'nullable|in:active,inactive',
+            'tags'        => 'nullable|array',
+            'tags.*'      => 'integer|exists:tags,id',
         ]);
 
         $product->update($data);
+        
+        if ($request->has('tags')) {
+            $product->tags()->sync($request->input('tags', []));
+        }
 
         return response()->json(['status' => 'success', 'message' => 'Produk berhasil diperbarui', 'data' => $product->load('category', 'tags')], 200);
     }

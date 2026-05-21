@@ -12,7 +12,14 @@ class OrderController extends Controller
     #[OA\Get(path: '/api/orders', tags: ['Orders'], summary: 'Ambil semua pesanan', security: [['bearerAuth' => []]], responses: [new OA\Response(response: 200, description: 'Berhasil'), new OA\Response(response: 401, description: 'Tidak terautentikasi')])]
     public function index()
     {
-        $orders = Order::with(['user', 'items.product'])->get();
+        $user = auth('api')->user();
+        if ($user && $user->role === 'customer') {
+            $orders = Order::with(['user', 'items.product'])
+                ->where('user_id', $user->id)
+                ->get();
+        } else {
+            $orders = Order::with(['user', 'items.product'])->get();
+        }
         return response()->json(['status' => 'success', 'message' => 'Data order berhasil diambil', 'data' => $orders], 200);
     }
 
@@ -54,6 +61,11 @@ class OrderController extends Controller
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity'   => 'required|integer|min:1',
         ]);
+
+        $user = auth('api')->user();
+        if ($user && $user->role === 'customer') {
+            $data['user_id'] = $user->id;
+        }
 
         $data['order_code']  = 'ORD-' . date('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
         $data['status']      = 'pending';
@@ -104,6 +116,11 @@ class OrderController extends Controller
 
         if (!$order) {
             return response()->json(['status' => 'error', 'message' => 'Order tidak ditemukan'], 404);
+        }
+
+        $user = auth('api')->user();
+        if ($user && $user->role === 'customer' && $order->user_id !== $user->id) {
+            return response()->json(['status' => 'error', 'message' => 'Akses ditolak: Anda tidak memiliki akses ke pesanan ini'], 403);
         }
 
         return response()->json(['status' => 'success', 'message' => 'Data order berhasil diambil', 'data' => $order], 200);

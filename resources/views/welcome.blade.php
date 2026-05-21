@@ -295,7 +295,12 @@
                         </div>
                     </div>
                     
-
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                        <h2 class="font-bold text-xs text-slate-800 uppercase tracking-tight mb-3 border-b border-slate-100 pb-2">Filter Berdasarkan Tag</h2>
+                        <div class="flex flex-wrap gap-1.5" id="tagFilterSidebar">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
                 </div>
 
                 <!-- PRODUCTS GRID -->
@@ -349,7 +354,7 @@
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
-                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Total Pembelian</span>
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider" id="dashTotalIncomeLabel">Total Pembelian</span>
                         <p class="text-2xl font-black text-slate-800 mt-1" id="dashTotalIncomePrice">Rp0</p>
                     </div>
                     <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-500 text-lg shadow-inner"><i class="fa-solid fa-wallet"></i></div>
@@ -503,7 +508,7 @@
 
                     <div class="border-t border-slate-100 pt-4">
                         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
-                            Simpan Order (POST /api/orders)
+                            Simpan Order
                         </button>
                     </div>
                 </form>
@@ -586,6 +591,13 @@
                         </select>
                     </div>
 
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1.5">Pilih Tag / Label Produk</label>
+                        <div id="productFormTagsContainer" class="flex flex-wrap gap-2.5 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
                     <div class="border-t border-slate-100 pt-4">
                         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
                             Simpan Produk Baru
@@ -639,6 +651,13 @@
                             <option value="active">Active (Tampil di Toko)</option>
                             <option value="inactive">Inactive (Disembunyikan)</option>
                         </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1.5">Pilih Tag / Label Produk</label>
+                        <div id="editProductFormTagsContainer" class="flex flex-wrap gap-2.5 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <!-- Populated via JS -->
+                        </div>
                     </div>
 
                     <div class="border-t border-slate-100 pt-4">
@@ -752,7 +771,7 @@
 
                     <div class="border-t border-slate-100 pt-4">
                         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow transition">
-                            Simpan Profil (POST /api/user-profiles)
+                            Simpan Profil
                         </button>
                     </div>
                 </form>
@@ -1125,6 +1144,10 @@
                     <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider block">Deskripsi Produk</span>
                     <p id="modalProductDesc" class="text-xs text-slate-600 mt-1 leading-relaxed">Penjelasan produk lengkap.</p>
                 </div>
+                <div id="modalProductTagsContainer" class="hidden">
+                    <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider block">Tag / Label</span>
+                    <div id="modalProductTags" class="flex flex-wrap gap-1 mt-1"></div>
+                </div>
                 <div class="grid grid-cols-2 gap-4 border-t border-b border-slate-100 py-3">
                     <div>
                         <span class="text-[9px] uppercase font-bold text-slate-400 block">Harga Satuan</span>
@@ -1176,6 +1199,7 @@
         let currentRoute = 'home';
         let searchQuery = '';
         let activeCategorySlug = 'all';
+        let activeTagSlug = 'all';
         let shoppingCart = [];
         
         // Auth state read from localStorage
@@ -1226,6 +1250,23 @@
                 }
             }
 
+            // Role guards for admin & manager pages
+            const adminManagerRoutes = ['product-new', 'product-edit'];
+            const adminOnlyRoutes = ['users-list', 'user-new', 'user-edit', 'user-detail', 'categories-list', 'category-new', 'category-edit', 'tags-list', 'tag-new', 'tag-edit'];
+            
+            if (jwtToken && loggedInUser) {
+                if (adminOnlyRoutes.includes(route) && loggedInUser.role !== 'admin') {
+                    showToastNotification('Akses ditolak: Hanya Admin yang dapat mengakses halaman ini.');
+                    navigateTo('dashboard');
+                    return;
+                }
+                if (adminManagerRoutes.includes(route) && loggedInUser.role !== 'admin' && loggedInUser.role !== 'manager') {
+                    showToastNotification('Akses ditolak: Hanya Admin dan Manager yang dapat mengakses halaman ini.');
+                    navigateTo('dashboard');
+                    return;
+                }
+            }
+
             currentRoute = route;
 
             // Toggle layouts based on route
@@ -1258,6 +1299,14 @@
             if (route === 'dashboard') {
                 loadDashboardStats();
                 loadDashboardOrders();
+                
+                const prodCard = document.getElementById('dashboardProductsCard');
+                if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'manager')) {
+                    prodCard.classList.remove('hidden');
+                    loadDashboardProducts();
+                } else {
+                    prodCard.classList.add('hidden');
+                }
             } else if (route === 'profile') {
                 loadMyProfile();
             } else if (route === 'users-list') {
@@ -1266,6 +1315,9 @@
                 loadCategoriesList();
             } else if (route === 'tags-list') {
                 loadTagsList();
+            } else if (route === 'product-new') {
+                populateProductCategoriesDropdown('productFormCategoryId');
+                populateProductTagsCheckboxes('productFormTagsContainer', []);
             }
         }
 
@@ -1492,9 +1544,18 @@
                 }
             }
 
+            // Apply tag filter
+            if (activeTagSlug !== 'all') {
+                filtered = filtered.filter(p => p.tags && p.tags.some(t => t.slug === activeTagSlug));
+            }
+
             // Apply search query
             if (searchQuery) {
-                filtered = filtered.filter(p => p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery));
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(searchQuery) || 
+                    p.description.toLowerCase().includes(searchQuery) ||
+                    (p.tags && p.tags.some(t => t.name.toLowerCase().includes(searchQuery)))
+                );
             }
 
             // Apply Sort
@@ -1528,10 +1589,15 @@
                             <span class="absolute top-2.5 left-2.5 bg-orange-500 text-white text-[8px] font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">UMKM Lokal</span>
                             <i class="fa-solid fa-gifts text-2xl opacity-35"></i>
                         </div>
-                        <div class="p-4 space-y-1.5">
-                            <h4 class="font-bold text-xs text-slate-800 line-clamp-1 uppercase">${p.name}</h4>
-                            <p class="text-[11px] text-slate-500 line-clamp-2 h-8">${p.description}</p>
-                            <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-50">
+                        <div class="p-4 space-y-1.5 flex flex-col justify-between h-[calc(100%-7rem)]">
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-800 line-clamp-1 uppercase">${p.name}</h4>
+                                <p class="text-[11px] text-slate-500 line-clamp-2 h-8 mt-1">${p.description}</p>
+                                <div class="flex flex-wrap gap-1 mt-2 mb-2">
+                                    ${p.tags ? p.tags.map(t => `<span class="bg-amber-50/80 text-amber-700 text-[8.5px] font-bold px-2 py-0.5 rounded-full uppercase border border-amber-200/50">#${t.name}</span>`).join('') : ''}
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-50">
                                 <span class="font-bold text-orange-600">Rp ${price.toLocaleString('id-ID')}</span>
                                 <span class="text-[10px] text-slate-500 font-medium">Stok: ${p.stock}</span>
                             </div>
@@ -1567,6 +1633,67 @@
             });
         }
 
+        // Render side tag list
+        function renderTagSidebar() {
+            const container = document.getElementById('tagFilterSidebar');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const isAllActive = activeTagSlug === 'all';
+            const allBtnClass = isAllActive 
+                ? 'bg-amber-500 text-white border-amber-500 font-bold shadow-sm' 
+                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100';
+
+            container.innerHTML += `
+                <button onclick="filterTag('all')" class="px-2.5 py-1 text-[10px] rounded-full border transition uppercase font-semibold ${allBtnClass}">
+                    Semua
+                </button>
+            `;
+
+            tagsData.forEach(t => {
+                const isActive = activeTagSlug === t.slug;
+                const btnClass = isActive 
+                    ? 'bg-amber-500 text-white border-amber-500 font-bold shadow-sm' 
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100';
+                
+                const count = products.filter(p => p.tags && p.tags.some(tag => tag.id === t.id)).length;
+                
+                container.innerHTML += `
+                    <button onclick="filterTag('${t.slug}')" class="px-2.5 py-1 text-[10px] rounded-full border transition uppercase font-semibold ${btnClass}">
+                        ${t.name} (${count})
+                    </button>
+                `;
+            });
+        }
+
+        function filterTag(slug) {
+            activeTagSlug = slug;
+            renderTagSidebar();
+            renderProducts();
+        }
+
+        // Helper to populate checkboxes in Product forms
+        function populateProductTagsCheckboxes(containerId, selectedTagIds = []) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (tagsData.length === 0) {
+                container.innerHTML = `<span class="text-xs text-slate-400 italic">Tidak ada data tag. Buat tag terlebih dahulu di menu Kelola Tag.</span>`;
+                return;
+            }
+
+            tagsData.forEach(t => {
+                const isChecked = selectedTagIds.includes(t.id) ? 'checked' : '';
+                container.innerHTML += `
+                    <label class="inline-flex items-center gap-1.5 cursor-pointer text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 hover:bg-slate-50 shadow-sm">
+                        <input type="checkbox" value="${t.id}" name="product_tags" ${isChecked} class="rounded border-slate-300 text-orange-500 focus:ring-orange-500">
+                        <span>#${t.name}</span>
+                    </label>
+                `;
+            });
+        }
+
         // ----------------- DETAILED PRODUCT MODAL -----------------
         function openProductModal(id) {
             const p = products.find(x => x.id === id);
@@ -1578,6 +1705,19 @@
             document.getElementById('modalProductDesc').innerText = p.description;
             document.getElementById('modalProductPrice').innerText = 'Rp ' + Number(p.price).toLocaleString('id-ID');
             document.getElementById('modalProductStock').innerText = p.stock + ' unit';
+
+            // Populate tags in modal
+            const tagsCont = document.getElementById('modalProductTagsContainer');
+            const tagsDiv = document.getElementById('modalProductTags');
+            if (tagsCont && tagsDiv) {
+                if (p.tags && p.tags.length > 0) {
+                    tagsCont.classList.remove('hidden');
+                    tagsDiv.innerHTML = p.tags.map(t => `<span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-200">#${t.name}</span>`).join('');
+                } else {
+                    tagsCont.classList.add('hidden');
+                    tagsDiv.innerHTML = '';
+                }
+            }
             
             const btn = document.getElementById('modalProductAddBtn');
             btn.onclick = () => {
@@ -1764,15 +1904,20 @@
             document.getElementById('dashUserRole').innerText = loggedInUser.role;
 
             const badge = document.getElementById('dashAuthorizationBadge');
+            const incomeLabel = document.getElementById('dashTotalIncomeLabel');
+            
             if (loggedInUser.role === 'admin') {
                 badge.innerText = 'Akses Penuh (CRUD + Hapus)';
                 badge.className = 'text-xs font-bold text-red-600 mt-2';
+                if (incomeLabel) incomeLabel.innerText = 'Total Penjualan';
             } else if (loggedInUser.role === 'manager') {
                 badge.innerText = 'Akses Kelola Status & Tambah';
                 badge.className = 'text-xs font-bold text-blue-600 mt-2';
+                if (incomeLabel) incomeLabel.innerText = 'Total Penjualan';
             } else {
                 badge.innerText = 'Akses Pesan & Lihat Saja';
                 badge.className = 'text-xs font-bold text-emerald-600 mt-2';
+                if (incomeLabel) incomeLabel.innerText = 'Total Pembelian';
             }
 
             // Set up order creation userId dropdown
@@ -2132,6 +2277,7 @@
                 if (response.ok && res.status === 'success') {
                     products = res.data || [];
                     renderCategorySidebar();
+                    renderTagSidebar();
                     renderProducts();
                     populateOrderFormProductsDropdown();
                 }
@@ -2215,6 +2361,7 @@
             document.getElementById('editProductFormStatus').value = p.status || 'active';
 
             populateProductCategoriesDropdown('editProductFormCategoryId');
+            populateProductTagsCheckboxes('editProductFormTagsContainer', p.tags ? p.tags.map(t => t.id) : []);
             navigateTo('product-edit');
         }
 
@@ -2259,6 +2406,10 @@
             const stock = Number(document.getElementById('productFormStock').value);
             const status = document.getElementById('productFormStatus').value;
 
+            // Get selected tag IDs from checkboxes
+            const selectedTags = Array.from(document.querySelectorAll('#productFormTagsContainer input[name="product_tags"]:checked'))
+                                      .map(cb => Number(cb.value));
+
             try {
                 const response = await fetch('/api/products', {
                     method: 'POST',
@@ -2267,7 +2418,7 @@
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${jwtToken}`
                     },
-                    body: JSON.stringify({ category_id, name, description, price, stock, status })
+                    body: JSON.stringify({ category_id, name, description, price, stock, status, tags: selectedTags })
                 });
 
                 const res = await response.json();
@@ -2301,6 +2452,10 @@
             const stock = Number(document.getElementById('editProductFormStock').value);
             const status = document.getElementById('editProductFormStatus').value;
 
+            // Get selected tag IDs from checkboxes
+            const selectedTags = Array.from(document.querySelectorAll('#editProductFormTagsContainer input[name="product_tags"]:checked'))
+                                      .map(cb => Number(cb.value));
+
             try {
                 const response = await fetch(`/api/products/${id}`, {
                     method: 'PUT',
@@ -2309,7 +2464,7 @@
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${jwtToken}`
                     },
-                    body: JSON.stringify({ category_id, name, description, price, stock, status })
+                    body: JSON.stringify({ category_id, name, description, price, stock, status, tags: selectedTags })
                 });
 
                 const res = await response.json();
